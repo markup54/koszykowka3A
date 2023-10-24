@@ -1,6 +1,7 @@
 package pl.zabrze.zs10.koszykowka3a;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.app.Activity;
@@ -22,7 +23,15 @@ public class MainActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
         punktyViewModel = new ViewModelProvider(this).get(PunktyViewModel.class);
-        binding.textView.setText(String.valueOf(punktyViewModel.getPunkty()));
+        punktyViewModel.getPunkty().observe(this,
+                new Observer<Integer>() {
+                    @Override
+                    public void onChanged(Integer integer) {
+                        binding.textView.setText(String.valueOf(integer));
+                    }
+                }
+        );
+
         binding.button.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -52,6 +61,6 @@ public class MainActivity extends AppCompatActivity {
     private void zmienPunkty(int i){
 
         punktyViewModel.dodajPunkty(i);
-        binding.textView.setText(String.valueOf(punktyViewModel.getPunkty()));
+
     }
 }
