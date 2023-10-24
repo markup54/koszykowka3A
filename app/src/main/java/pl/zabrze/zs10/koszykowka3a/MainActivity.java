@@ -1,9 +1,11 @@
 package pl.zabrze.zs10.koszykowka3a;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.PointerIcon;
 import android.view.View;
 
 import pl.zabrze.zs10.koszykowka3a.databinding.ActivityMainBinding;
@@ -11,6 +13,7 @@ import pl.zabrze.zs10.koszykowka3a.databinding.ActivityMainBinding;
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     private int punkty =0;
+    private PunktyViewModel punktyViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,6 +21,8 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+        punktyViewModel = new ViewModelProvider(this).get(PunktyViewModel.class);
+        binding.textView.setText(String.valueOf(punktyViewModel.getPunkty()));
         binding.button.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -45,7 +50,8 @@ public class MainActivity extends AppCompatActivity {
 
     }
     private void zmienPunkty(int i){
-        punkty+=i;
-        binding.textView.setText(String.valueOf(punkty));
+
+        punktyViewModel.dodajPunkty(i);
+        binding.textView.setText(String.valueOf(punktyViewModel.getPunkty()));
     }
 }
